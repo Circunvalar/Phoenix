@@ -31,4 +31,7 @@ public class ControladorHome {
         model.addAttribute("productos", productos);
         return "home";
     }
+    @GetMapping("/carrito")
+    public String mostrarCarrito() {
+    return "carrito";}
 }
