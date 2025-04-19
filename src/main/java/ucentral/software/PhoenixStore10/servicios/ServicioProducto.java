@@ -24,8 +24,8 @@ public class ServicioProducto {
         return repoProducto.findByPronombreContainingIgnoreCase(query);
     }
 
-    public Productos obtenerPorId(Long productoId) {
-        return repoProducto.findById(productoId).get();
+    public Productos obtenerPorId(int productoId) {
+        return repoProducto.findById( (long) productoId).get();
     }
 }
 

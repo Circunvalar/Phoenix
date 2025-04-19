@@ -1,16 +1,22 @@
 package ucentral.software.PhoenixStore10.entidades;
-
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import ucentral.software.PhoenixStore10.entidades.Productos;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ItemCarrito {
+
     private Productos producto;
     private int cantidad;
 
+    public ItemCarrito(Productos producto, int cantidad) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+    }
+
+    public void incrementarCantidad() {
+        this.cantidad++;
+    }
+
+    public double getSubtotal() {
+        return producto.getProprecio() * cantidad;
+    }
 }

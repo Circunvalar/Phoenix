@@ -4,60 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - Phoenix Store</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+
 <header>
     <div class="header-left">Phoenix Store</div>
-
     <div class="search-container">
         <form id="busquedaForm">
-            <label for="queryInput"></label><input type="text" id="queryInput" name="query" placeholder="Buscar productos...">
+            <input type="text" id="queryInput" name="query" placeholder="Buscar productos...">
             <button type="submit">Buscar</button>
         </form>
     </div>
-
     <div class="header-right">
-        <button onclick="window.location.href='/home'">
-            <img src="https://img.icons8.com/ios-filled/50/000000/home.png" alt="Inicio" width="20" height="20">
-            Volver al inicio
-        </button>
+        <button onclick="window.location.href='/home'">Seguir comprando</button>
     </div>
 </header>
 
-<div class="cart-container" th:if="${carrito != null && !carrito.isEmpty()}">
-    <h2>Tu carrito</h2>
-    <div class="cart-items" th:each="item : ${carrito}">
-        <div class="cart-item">
-            <img th:src="${item.proimagenUrl}" th:alt="${item.pronombre}" />
-            <div class="cart-details">
-                <p th:text="${item.pronombre}">Nombre del producto</p>
-                <p><strong>$</strong><span th:text="${item.proprecio}">0.0</span></p>
-                <p>Cantidad: <span th:text="${item.cantidad}">1</span></p>
-                <form th:action="@{/cart/remove}" method="post">
-                    <input type="hidden" name="productoId" th:value="${item.proid}" />
-                    <button type="submit">Eliminar</button>
-                </form>
-            </div>
-        </div>
+<main style="width: 80%; margin-top: 30px;">
+    <h2>Carrito de Compras</h2>
+
+    <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
+        <p>Tu carrito está vacío.</p>
     </div>
 
-    <div class="cart-total">
-        <h3>Total: $<span th:text="${total}">0.0</span></h3>
-        <button onclick="window.location.href='/checkout'">Proceder al pago</button>
-    </div>
-</div>
+    <table th:if="${carrito != null and !#lists.isEmpty(carrito)}" style="width: 100%; border-collapse: collapse;">
+        <thead>
+        <tr style="background-color: #ff6600; color: white;">
+            <th style="padding: 10px;">Producto</th>
+            <th style="padding: 10px;">Precio</th>
+            <th style="padding: 10px;">Cantidad</th>
+            <th style="padding: 10px;">Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${carrito}">
+            <td th:text="${item.pronombre}" style="padding: 10px;"></td>
+            <td th:text="${item.cantidad}"></td>
+            <td th:text="${item.producto.proprecio}"></td>
+        </tr>
 
-<div th:if="${carrito == null || carrito.isEmpty()}">
-    <p style="margin-top: 40px;">Tu carrito está vacío 😢</p>
-</div>
+        </tbody>
+    </table>
+
+    <div th:if="${carrito != null and !#lists.isEmpty(carrito)}" style="text-align: right; margin-top: 20px;">
+        <h3>Total: $<span th:text="${total}"></span></h3>
+        <button style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+            Finalizar compra
+        </button>
+    </div>
+</main>
 
 <script>
-    document.getElementById('busquedaForm').addEventListener('submit', function(event) {
+    document.getElementById('busquedaForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const query = document.getElementById('queryInput').value;
         if (query.trim() !== '') {
@@ -65,5 +64,6 @@
         }
     });
 </script>
+
 </body>
 </html>
