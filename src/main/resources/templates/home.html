@@ -39,7 +39,10 @@
         <img th:src="${producto.proimagenUrl}" th:alt="${producto.pronombre}" />
         <p th:text="${producto.pronombre}">Nombre del producto</p>
         <p><strong>$</strong><span th:text="${producto.proprecio}">0.0</span></p>
-        <button>Añadir al carrito</button>
+        <form action="/carrito/agregar" method="post">
+            <input type="hidden" name="id" th:value="${producto.id}" />
+            <button type="submit">Agregar al carrito</button>
+        </form>
     </div>
 </div>
 <script>
@@ -50,6 +53,7 @@
             window.location.href = '/home?query=' + encodeURIComponent(query);
         }
     });
+
 </script>
 </body>
 </html>

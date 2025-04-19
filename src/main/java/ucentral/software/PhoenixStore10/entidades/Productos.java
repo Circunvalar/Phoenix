@@ -34,4 +34,28 @@ public class Productos {
 
     @Column(nullable = false)
     private String proimagenUrl;
+
+    public Long getId() {
+        return procodigo;
+    }
+
+    public String getNombre() {
+        return pronombre;
+    }
+
+    public double getPrecio() {
+        return proprecio;
+    }
+
+    public void setProid(long l) {
+        this.procodigo = l;
+    }
+
+    public long getProid() {
+        return procodigo;
+    }
+
+    public void setId(long l) {
+        this.procodigo = l;
+    }
 }

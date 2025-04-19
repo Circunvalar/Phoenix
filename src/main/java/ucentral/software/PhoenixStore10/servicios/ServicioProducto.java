@@ -27,5 +27,9 @@ public class ServicioProducto {
     public Productos obtenerPorId(int productoId) {
         return repoProducto.findById( (long) productoId).get();
     }
+
+    public Productos obtenerProductoPorId(Long idProducto) {
+        return repoProducto.findById(idProducto).get();
+    }
 }
 

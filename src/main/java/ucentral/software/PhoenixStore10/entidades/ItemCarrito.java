@@ -1,22 +1,55 @@
 package ucentral.software.PhoenixStore10.entidades;
-import lombok.Data;
 
-@Data
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
 public class ItemCarrito {
-
-    private Productos producto;
+    private Long productoId;
+    private String nombre;
+    private double precio;
     private int cantidad;
 
-    public ItemCarrito(Productos producto, int cantidad) {
-        this.producto = producto;
+    // ✅ Constructor necesario
+    public ItemCarrito(Long productoId, String nombre, double precio, int cantidad) {
+        this.productoId = productoId;
+        this.nombre = nombre;
+        this.precio = precio;
         this.cantidad = cantidad;
     }
 
-    public void incrementarCantidad() {
-        this.cantidad++;
+    // Getters y Setters
+
+    public Long getProductoId() {
+        return productoId;
     }
 
-    public double getSubtotal() {
-        return producto.getProprecio() * cantidad;
+    public void setProductoId(Long productoId) {
+        this.productoId = productoId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }

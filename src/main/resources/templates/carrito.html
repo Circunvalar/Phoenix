@@ -39,12 +39,13 @@
         </thead>
         <tbody>
         <tr th:each="item : ${carrito}">
-            <td th:text="${item.pronombre}" style="padding: 10px;"></td>
-            <td th:text="${item.cantidad}"></td>
-            <td th:text="${item.producto.proprecio}"></td>
+            <td th:text="${item.nombre}" style="padding: 10px;"></td>
+            <td th:text="${item.precio}" style="padding: 10px;"></td>
+            <td th:text="${item.cantidad}" style="padding: 10px;"></td>
+            <td th:text="${item.precio * item.cantidad}" style="padding: 10px;"></td>
         </tr>
-
         </tbody>
+
     </table>
 
     <div th:if="${carrito != null and !#lists.isEmpty(carrito)}" style="text-align: right; margin-top: 20px;">
