@@ -3,8 +3,12 @@ package ucentral.software.PhoenixStore10.controladores;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ucentral.software.PhoenixStore10.entidades.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ucentral.software.PhoenixStore10.entidades.ItemCarrito;
+import ucentral.software.PhoenixStore10.entidades.Productos;
 import ucentral.software.PhoenixStore10.repositorios.RepoProducto;
 
 import java.util.ArrayList;

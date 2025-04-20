@@ -13,7 +13,7 @@ import ucentral.software.PhoenixStore10.servicios.ServicioUsuario;
 public class ControladorRegistro {
 
     @Autowired
-    private  ServicioUsuario servicioUsuario;
+    private ServicioUsuario servicioUsuario;
 
 
     @GetMapping("/register")

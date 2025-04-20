@@ -2,7 +2,6 @@ package ucentral.software.PhoenixStore10.controladores;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,7 +13,8 @@ import ucentral.software.PhoenixStore10.repositorios.RepoProducto;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ControladorCarrito.class)
@@ -68,4 +68,5 @@ public class ControladorCarritoTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/carrito"));
     }
+
 }

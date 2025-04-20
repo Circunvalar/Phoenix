@@ -8,8 +8,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import ucentral.software.PhoenixStore10.servicios.ServicioAutentificacion;
 import ucentral.software.PhoenixStore10.servicios.ServicioUsuario;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ControladorLogin.class)

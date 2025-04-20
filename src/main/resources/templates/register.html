@@ -18,9 +18,11 @@
             width: 360px;
             text-align: center;
         }
+
         .register-container h2 {
             margin-bottom: 20px;
         }
+
         .register-container input {
             width: 100%;
             padding: 12px;
@@ -29,6 +31,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .register-container button {
             background-color: #ff6600;
             color: white;
@@ -39,15 +42,18 @@
             cursor: pointer;
             width: 100%;
         }
+
         .error-message {
             color: red;
             margin-top: 10px;
             font-size: 14px;
         }
+
         .back-to-login {
             margin-top: 10px;
             font-size: 14px;
         }
+
         .back-to-login a {
             color: #ff6600;
             text-decoration: none;
@@ -72,15 +78,15 @@
     <h2>Registrarse</h2>
     <form th:action="@{/register}" method="post" th:object="${usuario}">
         <label>
-        <input type="text" th:field="*{usunombres}" placeholder="Nombres" required />
-        <input type="text" th:field="*{usuapellidos}" placeholder="Apellidos" required />
-        <input type="text" th:field="*{usucedula}" placeholder="Cédula" required />
-        <input type="text" th:field="*{usuusername}" placeholder="Nombre de usuario" required />
-        <input type="email" th:field="*{usucorreo}" placeholder="Correo electrónico" required />
-        <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required />
-        <input type="text" th:field="*{usutelefono}" placeholder="Teléfono" required />
-        <input type="text" th:field="*{usudireccion}" placeholder="Dirección" required />
-        <button type="submit">Registrarse</button>
+            <input type="text" th:field="*{usunombres}" placeholder="Nombres" required/>
+            <input type="text" th:field="*{usuapellidos}" placeholder="Apellidos" required/>
+            <input type="text" th:field="*{usucedula}" placeholder="Cédula" required/>
+            <input type="text" th:field="*{usuusername}" placeholder="Nombre de usuario" required/>
+            <input type="email" th:field="*{usucorreo}" placeholder="Correo electrónico" required/>
+            <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required/>
+            <input type="text" th:field="*{usutelefono}" placeholder="Teléfono" required/>
+            <input type="text" th:field="*{usudireccion}" placeholder="Dirección" required/>
+            <button type="submit">Registrarse</button>
         </label>
     </form>
 

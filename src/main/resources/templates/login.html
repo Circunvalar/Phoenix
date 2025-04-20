@@ -17,9 +17,11 @@
             width: 320px;
             text-align: center;
         }
+
         .login-container h2 {
             margin-bottom: 20px;
         }
+
         .login-container input {
             width: 100%;
             padding: 12px;
@@ -28,6 +30,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .login-container button {
             background-color: #ff6600;
             color: white;
@@ -38,14 +41,17 @@
             cursor: pointer;
             width: 100%;
         }
+
         .register-link, .forgot-password {
             margin-top: 10px;
             font-size: 14px;
         }
+
         .register-link a, .forgot-password a {
             color: #ff6600;
             text-decoration: none;
         }
+
         .error-message {
             color: red;
             margin-top: 10px;
@@ -67,8 +73,8 @@
     <h2>Iniciar Sesión</h2>
     <form th:action="@{/login}" method="post" th:object="${usuario}">
         <label>
-            <input type="text" th:field="*{usuusername}" placeholder="Usuario" required />
-            <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required />
+            <input type="text" th:field="*{usuusername}" placeholder="Usuario" required/>
+            <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required/>
         </label>
         <button type="submit">Entrar</button>
     </form>
