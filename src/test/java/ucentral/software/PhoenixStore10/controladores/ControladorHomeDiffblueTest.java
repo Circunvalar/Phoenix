@@ -1,16 +1,5 @@
 package ucentral.software.PhoenixStore10.controladores;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,6 +8,13 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import ucentral.software.PhoenixStore10.entidades.Productos;
 import ucentral.software.PhoenixStore10.servicios.ServicioProducto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 class ControladorHomeDiffblueTest {
     /**

@@ -2,9 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Carrito - Phoenix Store</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
 
@@ -12,7 +12,7 @@
     <div class="header-left">Phoenix Store</div>
     <div class="search-container">
         <form id="busquedaForm">
-            <input type="text" id="queryInput" name="query" placeholder="Buscar productos...">
+            <label for="queryInput"></label><input id="queryInput" name="query" placeholder="Buscar productos..." type="text">
             <button type="submit">Buscar</button>
         </form>
     </div>
@@ -28,7 +28,7 @@
         <p>Tu carrito está vacío.</p>
     </div>
 
-    <table th:if="${carrito != null and !#lists.isEmpty(carrito)}" style="width: 100%; border-collapse: collapse;">
+    <table style="width: 100%; border-collapse: collapse;" th:if="${carrito != null and !#lists.isEmpty(carrito)}">
         <thead>
         <tr style="background-color: #ff6600; color: white;">
             <th style="padding: 10px;">Producto</th>
@@ -39,16 +39,16 @@
         </thead>
         <tbody>
         <tr th:each="item : ${carrito}">
-            <td th:text="${item.nombre}" style="padding: 10px;"></td>
-            <td th:text="${item.precio}" style="padding: 10px;"></td>
-            <td th:text="${item.cantidad}" style="padding: 10px;"></td>
-            <td th:text="${item.precio * item.cantidad}" style="padding: 10px;"></td>
+            <td style="padding: 10px;" th:text="${item.nombre}"></td>
+            <td style="padding: 10px;" th:text="${item.precio}"></td>
+            <td style="padding: 10px;" th:text="${item.cantidad}"></td>
+            <td style="padding: 10px;" th:text="${item.precio * item.cantidad}"></td>
         </tr>
         </tbody>
 
     </table>
 
-    <div th:if="${carrito != null and !#lists.isEmpty(carrito)}" style="text-align: right; margin-top: 20px;">
+    <div style="text-align: right; margin-top: 20px;" th:if="${carrito != null and !#lists.isEmpty(carrito)}">
         <h3>Total: $<span th:text="${total}"></span></h3>
         <button style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
             Finalizar compra

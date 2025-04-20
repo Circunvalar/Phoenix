@@ -39,23 +39,19 @@ public class Productos {
         return procodigo;
     }
 
+    public void setId(long l) {
+        this.procodigo = l;
+    }
+
     public String getNombre() {
         return pronombre;
-    }
-
-    public double getPrecio() {
-        return proprecio;
-    }
-
-    public void setProid(long l) {
-        this.procodigo = l;
     }
 
     public long getProid() {
         return procodigo;
     }
 
-    public void setId(long l) {
+    public void setProid(long l) {
         this.procodigo = l;
     }
 }

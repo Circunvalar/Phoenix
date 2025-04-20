@@ -1,19 +1,6 @@
 package ucentral.software.PhoenixStore10.controladores;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import jakarta.servlet.http.HttpSession;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -34,6 +21,14 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import ucentral.software.PhoenixStore10.entidades.Productos;
 import ucentral.software.PhoenixStore10.repositorios.RepoProducto;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {ControladorCarrito.class})
 @ExtendWith(SpringExtension.class)

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar Sesión - Phoenix Store</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Tu CSS central -->
+    <link href="/css/styles.css" rel="stylesheet"> <!-- Tu CSS central -->
     <style>
         .login-container {
             background-color: white;
@@ -71,10 +71,10 @@
 </header>
 <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <form th:action="@{/login}" method="post" th:object="${usuario}">
+    <form method="post" th:action="@{/login}" th:object="${usuario}">
         <label>
-            <input type="text" th:field="*{usuusername}" placeholder="Usuario" required/>
-            <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required/>
+            <input placeholder="Usuario" required th:field="*{usuusername}" type="text"/>
+            <input placeholder="Contraseña" required th:field="*{usucontrasena}" type="password"/>
         </label>
         <button type="submit">Entrar</button>
     </form>

@@ -11,6 +11,7 @@ import ucentral.software.PhoenixStore10.repositorios.RepoUsuario;
 public class ServicioUsuario {
 
     private final PasswordEncrypt passwordEncrypt;
+
     private final RepoUsuario repoUsuario;
 
     @Autowired
@@ -24,22 +25,22 @@ public class ServicioUsuario {
     }
 
     public String registrarUsuario(Usuario usuario, Model model) {
-        if (repoUsuario.findByUsucedula(usuario.getUsucedula()).isPresent()) {
-            model.addAttribute("error", "Ya existe un usuario con esta cédula.");
+        if (repoUsuario.existsByUsucorreo(usuario.getUsucorreo())) {
+            model.addAttribute("error", "El correo ya está registrado.");
             return "register";
         }
-
-        if (repoUsuario.findByUsuusername(usuario.getUsuusername()).isPresent()) {
-            model.addAttribute("error", "El nombre de usuario ya está en uso.");
+        if (repoUsuario.existsByUsucedula(usuario.getUsucedula())) {
+            model.addAttribute("error", "La cédula ya está registrada.");
             return "register";
         }
-
-        usuario.setUsurol("cliente");
-
-        usuario.setUsucontrasena(passwordEncrypt.hashPassword(usuario.getUsucontrasena()));
+        if (repoUsuario.existsByUsuusername(usuario.getUsuusername())) {
+            model.addAttribute("error", "El nombre de usuario ya está registrado.");
+            return "register";
+        }
 
         repoUsuario.save(usuario);
-
-        return "redirect:/login";
+        model.addAttribute("success", "Usuario registrado exitosamente.");
+        return "login"; // O a donde redirijas luego de un registro exitoso
     }
+
 }
