@@ -49,7 +49,7 @@ public class ControladorLogin {
             System.out.println("Falló el login");
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             model.addAttribute("usuario", usuario);
-            return "login";
+            return "redirect:/";
         }
     }
 

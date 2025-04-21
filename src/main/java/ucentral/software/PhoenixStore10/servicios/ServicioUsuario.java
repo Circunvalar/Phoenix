@@ -37,10 +37,10 @@ public class ServicioUsuario {
             model.addAttribute("error", "El nombre de usuario ya está registrado.");
             return "register";
         }
-
+        usuario.setUsurol("cliente");
         repoUsuario.save(usuario);
         model.addAttribute("success", "Usuario registrado exitosamente.");
-        return "login"; // O a donde redirijas luego de un registro exitoso
+        return "home";
     }
 
 }
