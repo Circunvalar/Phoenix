@@ -149,7 +149,7 @@ class ControladorLoginDiffblueTest {
         verify(servicioAutentificacion).inicioSesion(eq("janedoe"), eq("Usucontrasena"));
         assertEquals(2, model.size());
         assertEquals("Usuario o contraseña incorrectos", model.get("error"));
-        assertEquals("login", actualIniciarSesionResult);
+        assertEquals("redirect:/", actualIniciarSesionResult);
         assertSame(usuario, model.get("usuario"));
     }
 }
