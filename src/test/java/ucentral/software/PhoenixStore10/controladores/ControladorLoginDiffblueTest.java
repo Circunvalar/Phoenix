@@ -26,21 +26,15 @@ class ControladorLoginDiffblueTest {
     @DisplayName("Test mostrarFormularioLogin(Model)")
     @Tag("MaintainedByDiffblue")
     void testMostrarFormularioLogin() {
-        //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-        //   Run dcover create --keep-partial-tests to gain insights into why
-        //   a non-Spring test was created.
 
-        // Arrange
         RepoUsuario repoUsuario = mock(RepoUsuario.class);
         ServicioUsuario servicioUsuario = new ServicioUsuario(repoUsuario, new PasswordEncrypt());
 
         ControladorLogin controladorLogin = new ControladorLogin(servicioUsuario, new ServicioAutentificacion());
         ConcurrentModel model = new ConcurrentModel();
 
-        // Act
         String actualMostrarFormularioLoginResult = controladorLogin.mostrarFormularioLogin(model);
 
-        // Assert
         assertEquals(1, model.size());
         Object getResult = model.get("usuario");
         assertTrue(getResult instanceof Usuario);
@@ -69,11 +63,7 @@ class ControladorLoginDiffblueTest {
     @DisplayName("Test iniciarSesion(Usuario, Model); then ConcurrentModel() 'error' is 'Rol no reconocido'")
     @Tag("MaintainedByDiffblue")
     void testIniciarSesion_thenConcurrentModelErrorIsRolNoReconocido() {
-        //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-        //   Run dcover create --keep-partial-tests to gain insights into why
-        //   a non-Spring test was created.
 
-        // Arrange
         ServicioAutentificacion servicioAutentificacion = mock(ServicioAutentificacion.class);
         when(servicioAutentificacion.definirRol(Mockito.<String>any())).thenReturn("Definir Rol");
         when(servicioAutentificacion.inicioSesion(Mockito.<String>any(), Mockito.<String>any())).thenReturn(true);
@@ -118,11 +108,7 @@ class ControladorLoginDiffblueTest {
     @DisplayName("Test iniciarSesion(Usuario, Model); then ConcurrentModel() 'error' is 'Usuario o contraseña incorrectos'")
     @Tag("MaintainedByDiffblue")
     void testIniciarSesion_thenConcurrentModelErrorIsUsuarioOContraseAIncorrectos() {
-        //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-        //   Run dcover create --keep-partial-tests to gain insights into why
-        //   a non-Spring test was created.
 
-        // Arrange
         ServicioAutentificacion servicioAutentificacion = mock(ServicioAutentificacion.class);
         when(servicioAutentificacion.inicioSesion(Mockito.<String>any(), Mockito.<String>any())).thenReturn(false);
         RepoUsuario repoUsuario = mock(RepoUsuario.class);
@@ -142,10 +128,8 @@ class ControladorLoginDiffblueTest {
         usuario.setUsuusername("janedoe");
         ConcurrentModel model = new ConcurrentModel();
 
-        // Act
         String actualIniciarSesionResult = controladorLogin.iniciarSesion(usuario, model);
 
-        // Assert
         verify(servicioAutentificacion).inicioSesion(eq("janedoe"), eq("Usucontrasena"));
         assertEquals(2, model.size());
         assertEquals("Usuario o contraseña incorrectos", model.get("error"));
