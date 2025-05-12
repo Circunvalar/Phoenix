@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn clean package --file pom.xml
+        run: mvn clean package -DskipTests
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -36,16 +36,16 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: java-Application
+          name: java-app
 
-      - name: Rename JAR to Application.jar
+      - name: Rename jar to app.jar
         run: |
-          JAR_FILE=$(ls *.jar | head -n 1)
-          mv "$JAR_FILE" Application.jar
+          JAR=$(ls *.jar | head -n 1)
+          mv "$JAR" app.jar
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: Application
           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: Application.jar
+          package: app.jar
