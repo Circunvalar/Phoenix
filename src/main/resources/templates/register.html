@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrarse - Phoenix Store</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css"> <!-- CSS central -->
+    <link href="/css/styles.css" rel="stylesheet"> <!-- CSS central -->
     <style>
         /* Estilos propios del formulario de registro */
         .register-container {
@@ -18,9 +18,11 @@
             width: 360px;
             text-align: center;
         }
+
         .register-container h2 {
             margin-bottom: 20px;
         }
+
         .register-container input {
             width: 100%;
             padding: 12px;
@@ -29,6 +31,7 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
         .register-container button {
             background-color: #ff6600;
             color: white;
@@ -39,15 +42,18 @@
             cursor: pointer;
             width: 100%;
         }
+
         .error-message {
             color: red;
             margin-top: 10px;
             font-size: 14px;
         }
+
         .back-to-login {
             margin-top: 10px;
             font-size: 14px;
         }
+
         .back-to-login a {
             color: #ff6600;
             text-decoration: none;
@@ -70,17 +76,17 @@
 <!-- Contenedor principal del formulario -->
 <div class="register-container">
     <h2>Registrarse</h2>
-    <form th:action="@{/register}" method="post" th:object="${usuario}">
+    <form method="post" th:action="@{/register}" th:object="${usuario}">
         <label>
-        <input type="text" th:field="*{usunombres}" placeholder="Nombres" required />
-        <input type="text" th:field="*{usuapellidos}" placeholder="Apellidos" required />
-        <input type="text" th:field="*{usucedula}" placeholder="Cédula" required />
-        <input type="text" th:field="*{usuusername}" placeholder="Nombre de usuario" required />
-        <input type="email" th:field="*{usucorreo}" placeholder="Correo electrónico" required />
-        <input type="password" th:field="*{usucontrasena}" placeholder="Contraseña" required />
-        <input type="text" th:field="*{usutelefono}" placeholder="Teléfono" required />
-        <input type="text" th:field="*{usudireccion}" placeholder="Dirección" required />
-        <button type="submit">Registrarse</button>
+            <input placeholder="Nombres" required th:field="*{usunombres}" type="text"/>
+            <input placeholder="Apellidos" required th:field="*{usuapellidos}" type="text"/>
+            <input placeholder="Cédula" required th:field="*{usucedula}" type="text"/>
+            <input placeholder="Nombre de usuario" required th:field="*{usuusername}" type="text"/>
+            <input placeholder="Correo electrónico" required th:field="*{usucorreo}" type="email"/>
+            <input placeholder="Contraseña" required th:field="*{usucontrasena}" type="password"/>
+            <input placeholder="Teléfono" required th:field="*{usutelefono}" type="text"/>
+            <input placeholder="Dirección" required th:field="*{usudireccion}" type="text"/>
+            <button type="submit">Registrarse</button>
         </label>
     </form>
 

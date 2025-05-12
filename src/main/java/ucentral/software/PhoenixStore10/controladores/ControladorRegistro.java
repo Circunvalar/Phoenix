@@ -13,8 +13,7 @@ import ucentral.software.PhoenixStore10.servicios.ServicioUsuario;
 public class ControladorRegistro {
 
     @Autowired
-    private  ServicioUsuario servicioUsuario;
-
+    private ServicioUsuario servicioUsuario;
 
     @GetMapping("/register")
     public String formularioRegistro(Model model) {
@@ -24,7 +23,11 @@ public class ControladorRegistro {
 
     @PostMapping("/register")
     public String registrarUsuario(@ModelAttribute("usuario") Usuario usuario, Model model) {
-        return servicioUsuario.registrarUsuario(usuario, model);
+        try {
+            return servicioUsuario.registrarUsuario(usuario, model);
+        } catch (Exception ex) {
+            model.addAttribute("error", "Ocurrió un error durante el registro: " + ex.getMessage());
+            return "register";
+        }
     }
-
 }

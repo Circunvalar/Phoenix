@@ -23,8 +23,10 @@ public class ServicioAutentificacion {
         }
         return false;
     }
+
     public String definirRol(String usu_username) {
         Optional<Usuario> clienteOptional = repoUsuario.findByUsuusername(usu_username);
         Usuario cliente = clienteOptional.get();
-        return cliente.getUsurol();}
+        return cliente.getUsurol();
+    }
 }

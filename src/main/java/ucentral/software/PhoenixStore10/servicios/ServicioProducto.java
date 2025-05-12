@@ -17,12 +17,21 @@ public class ServicioProducto {
         return repoProducto.findAll();
 
     }
+
     public List<Productos> obtenerTodosLosProductos() {
         return repoProducto.findAll();
     }
+
     public List<Productos> buscarPorNombre(String query) {
         return repoProducto.findByPronombreContainingIgnoreCase(query);
     }
 
+    public Productos obtenerPorId(int productoId) {
+        return repoProducto.findById((long) productoId).get();
+    }
+
+    public Productos obtenerProductoPorId(Long idProducto) {
+        return repoProducto.findById(idProducto).get();
+    }
 }
 

@@ -2,14 +2,15 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Phoenix Store</title>
 
     <!-- Fuentes y estilos -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
 </head>
 <body>
 
@@ -18,7 +19,8 @@
 
     <div class="search-container">
         <form id="busquedaForm">
-            <label for="queryInput"></label><input type="text" id="queryInput" name="query" placeholder="Buscar producto...">
+            <label for="queryInput"></label><input id="queryInput" name="query" placeholder="Buscar producto..."
+                                                   type="text">
             <button type="submit">Buscar</button>
         </form>
     </div>
@@ -26,7 +28,7 @@
     <div class="header-right">
         <form action="/login" method="get">
             <button type="submit">
-                <img src="https://img.icons8.com/ios-filled/50/000000/user.png" alt="Login" width="20" height="20">
+                <img alt="Login" height="20" src="https://img.icons8.com/ios-filled/50/000000/user.png" width="20">
                 Iniciar Sesión
             </button>
         </form>
@@ -36,7 +38,7 @@
 <!-- Resultados -->
 <div class="products" th:if="${productos != null and !#lists.isEmpty(productos)}">
     <div class="product" th:each="producto : ${productos}">
-        <img th:src="${producto.proimagenUrl}" th:alt="${producto.pronombre}" />
+        <img th:alt="${producto.pronombre}" th:src="${producto.proimagenUrl}"/>
         <p th:text="${producto.pronombre}">Nombre del producto</p>
         <p><strong>$</strong><span th:text="${producto.proprecio}">0.0</span></p>
         <button>Añadir al carrito</button>
@@ -49,7 +51,7 @@
 </div>
 
 <script>
-    document.getElementById('busquedaForm').addEventListener('submit', function(e) {
+    document.getElementById('busquedaForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Evita envío normal del form
 
         const query = document.getElementById('queryInput').value;
