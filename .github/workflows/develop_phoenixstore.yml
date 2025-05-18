@@ -51,4 +51,3 @@ jobs:
           app-name: 'Phoenix'  # <--- Este es el nombre real de tu app en Azure
           slot-name: 'Production'
           package: PhoenixStore-1.0-0.0.1-SNAPSHOT.jar
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B94587951BE24E6386C1731C0412BD5B }}
