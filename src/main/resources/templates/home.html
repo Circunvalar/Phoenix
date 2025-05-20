@@ -30,7 +30,7 @@
         </button>
     </div>
     <div class="header-right">
-        <button onclick="window.location.href='redirect:/'">
+        <button onclick="window.location.href='/login'">
             Cerrar Sesión
         </button>
     </div>
@@ -38,7 +38,7 @@
 
 <div class="products" th:if="${productos != null}">
     <div class="product" th:each="producto : ${productos}">
-        <img th:alt="${producto.pronombre}" th:src="${producto.proimagenUrl}"/>
+        <img th:src="@{'/img/' + ${producto.proimagenUrl} + '.png'}"/>
         <p th:text="${producto.pronombre}">Nombre del producto</p>
         <p><strong>$</strong><span th:text="${producto.proprecio}">0.0</span></p>
         <form action="/carrito/agregar" method="post">

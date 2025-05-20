@@ -12,8 +12,8 @@
     <div class="header-left">Phoenix Store</div>
     <div class="search-container">
         <form id="busquedaForm">
-            <label for="queryInput"></label><input id="queryInput" name="query" placeholder="Buscar productos..."
-                                                   type="text">
+            <label for="queryInput"></label>
+            <input id="queryInput" name="query" placeholder="Buscar productos..." type="text">
             <button type="submit">Buscar</button>
         </form>
     </div>
@@ -41,19 +41,20 @@
         <tbody>
         <tr th:each="item : ${carrito}">
             <td style="padding: 10px;" th:text="${item.nombre}"></td>
-            <td style="padding: 10px;" th:text="${item.precio}"></td>
+            <td style="padding: 10px;" th:text="${#numbers.formatDecimal(item.precio, 1, 2)}"></td>
             <td style="padding: 10px;" th:text="${item.cantidad}"></td>
-            <td style="padding: 10px;" th:text="${item.precio * item.cantidad}"></td>
+            <td style="padding: 10px;" th:text="${#numbers.formatDecimal(item.precio * item.cantidad, 1, 2)}"></td>
         </tr>
         </tbody>
-
     </table>
 
     <div style="text-align: right; margin-top: 20px;" th:if="${carrito != null and !#lists.isEmpty(carrito)}">
-        <h3>Total: $<span th:text="${total}"></span></h3>
-        <button style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
-            Finalizar compra
-        </button>
+        <h3>Total: $<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span></h3>
+        <form method="get" th:action="@{/orden/confirmar}">
+            <button style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Finalizar compra
+            </button>
+        </form>
     </div>
 </main>
 
@@ -66,6 +67,3 @@
         }
     });
 </script>
-
-</body>
-</html>

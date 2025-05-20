@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - Phoenix Store</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header>
+    <div class="header-left">Phoenix Store</div>
+    <div class="search-container">
+        <form id="busquedaForm">
+            <label for="queryInput"></label>
+            <input id="queryInput" name="query" placeholder="Buscar productos..." type="text">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    <div class="header-right">
+        <button onclick="window.location.href='/home'">Volver al inicio</button>
+    </div>
+</header>
+
+<main style="width: 80%; margin-top: 30px;">
+    <h2>Finalizar Compra</h2>
+
+    <div th:if="${carrito == null or #lists.isEmpty(carrito)}">
+        <p>Tu carrito está vacío. <a href="/home">Volver a la tienda</a></p>
+    </div>
+
+    <div th:if="${carrito != null and !#lists.isEmpty(carrito)}">
+        <h3>Resumen de la compra:</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+            <tr style="background-color: #ff6600; color: white;">
+                <th style="padding: 10px;">Producto</th>
+                <th style="padding: 10px;">Cantidad</th>
+                <th style="padding: 10px;">Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${carrito}">
+                <td style="padding: 10px;" th:text="${item.nombre}"></td>
+                <td style="padding: 10px;" th:text="${item.cantidad}"></td>
+                <td style="padding: 10px;" th:text="${#numbers.formatDecimal(item.precio * item.cantidad, 1, 2)}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="text-align: right; margin-top: 20px;">
+            <h3>Total a pagar: $<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span></h3>
+        </div>
+
+        <form th:action="@{/orden/confirmar}" method="post" style="margin-top: 30px;">
+            <h3>Datos del cliente:</h3>
+            <div style="margin-bottom: 10px;">
+                <label for="nombre">Nombre completo:</label><br>
+                <input type="text" id="nombre" name="nombre" required style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="direccion">Dirección de envío:</label><br>
+                <input type="text" id="direccion" name="direccion" required style="width: 100%;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="correo">Correo electrónico:</label><br>
+                <input type="email" id="correo" name="correo" required style="width: 100%;">
+            </div>
+
+            <button type="submit"
+                    style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                Confirmar pedido
+            </button>
+        </form>
+    </div>
+</main>
+
+<script>
+    document.getElementById('busquedaForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const query = document.getElementById('queryInput').value;
+        if (query.trim() !== '') {
+            window.location.href = '/home?query=' + encodeURIComponent(query);
+        }
+    });
+</script>
+
+</body>
+</html>

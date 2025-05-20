@@ -37,6 +37,10 @@ public class ServicioUsuario {
             model.addAttribute("error", "El nombre de usuario ya está registrado.");
             return "register";
         }
+        // Encriptar la contraseña antes de guardar
+        String hashedPassword = passwordEncrypt.hashPassword(usuario.getUsucontrasena());
+        usuario.setUsucontrasena(hashedPassword);
+
         usuario.setUsurol("cliente");
         repoUsuario.save(usuario);
         model.addAttribute("success", "Usuario registrado exitosamente.");
