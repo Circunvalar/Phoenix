@@ -1,4 +1,4 @@
-name: Build and deploy WAR app to Azure Web App - PhoenixStore
+name: Build and deploy JAR app to Azure Web App - PhoenixStore
 
 on:
   push:
@@ -13,22 +13,23 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Java version
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'microsoft'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean package -DskipTests
 
-      - name: Upload artifact for deployment job
+      - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: target/PhoenixStore-1.0-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: windows-latest
@@ -36,22 +37,17 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
-      - name: Download artifact from build job
+      - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
           name: java-app
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'PhoenixStore'
+          app-name: 'Phoenix'  # <--- Este es el nombre real de tu app en Azure
           slot-name: 'Production'
-          package: '*.war'
+          package: PhoenixStore-1.0-0.0.1-SNAPSHOT.jar
