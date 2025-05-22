@@ -33,13 +33,13 @@ public class ControladorLogin {
 
             switch (rol) {
                 case "administrador":
-                    return "administrador";
+                    return "redirect:/administrador";
                 case "cliente":
-                    return "home";
+                    return "redirect:/home";
                 case "trabajador":
-                    return "trabajador";
+                    return "redirect:/trabajador";
                 case "repartidor":
-                    return "repartidor";
+                    return "redirect:/repartidor";
                 default:
                     model.addAttribute("error", "Rol no reconocido");
                     model.addAttribute("usuario", usuario);
