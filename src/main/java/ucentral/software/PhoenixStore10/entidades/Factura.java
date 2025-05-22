@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "FACTURAS")
+@Table(name = "facturas")
 public class Factura {
 
     @Id
@@ -29,5 +29,3 @@ public class Factura {
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleFactura> detalles;
 }
-
-

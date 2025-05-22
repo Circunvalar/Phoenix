@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'phoenixstore'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'PhoenixStore-1.0-0.0.1-SNAPSHOT.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11FDB143446A4D01970981D0370D356D }}
