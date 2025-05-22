@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: List files before deploy
-      - run: ls -l
+        run: ls -l
 
       - uses: actions/checkout@v4
 
@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'phoenixstore'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'java-app/app.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11FDB143446A4D01970981D0370D356D }}
