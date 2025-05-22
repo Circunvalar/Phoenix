@@ -21,7 +21,9 @@
         <java.version>21</java.version>
         <spring-ai.version>1.0.0-M7</spring-ai.version>
     </properties>
-
+    <build>
+        <finalName>app</finalName>
+    </build>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
