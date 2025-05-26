@@ -1,4 +1,7 @@
-name: Build and deploy JAR app to Azure Web App - phoenixstore
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy JAR app to Azure Web App - BogPhoenixStore
 
 on:
   push:
@@ -10,12 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # Esto es requerido para actions/checkout
+      contents: read #This is required for actions/checkout
 
     steps:
-      - name: List files before deploy
-        run: ls -l
-
       - uses: actions/checkout@v4
 
       - name: Set up Java version
@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: target/*.jar
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -39,18 +39,28 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+  
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2EED3C88B4F6464FAD5F2F5B83DED139 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_40BD9DC33B1B4E36ADC978E8B8223992 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C28F5075F7AF42A4B5151BCA06C97B2B }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'phoenixstore'
+          app-name: 'BogPhoenixStore'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_11FDB143446A4D01970981D0370D356D }}
+          
