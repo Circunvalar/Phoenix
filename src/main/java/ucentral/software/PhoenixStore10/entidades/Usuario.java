@@ -55,7 +55,6 @@ public class Usuario {
     private String usutelefono;
 
     @Column
-    @NotBlank(message = "La dirección es obligatoria")
     private String usudireccion;
 }
 

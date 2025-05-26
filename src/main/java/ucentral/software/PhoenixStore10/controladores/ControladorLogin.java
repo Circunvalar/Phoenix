@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpSession;
 import ucentral.software.PhoenixStore10.entidades.Usuario;
 import ucentral.software.PhoenixStore10.servicios.ServicioAutentificacion;
 import ucentral.software.PhoenixStore10.servicios.ServicioUsuario;
@@ -25,12 +26,15 @@ public class ControladorLogin {
 
 
     @PostMapping("/login")
-    public String iniciarSesion(Usuario usuario, Model model) {
+    public String iniciarSesion(Usuario usuario, Model model, HttpSession session) {
         boolean loginExitoso = servicioAutentificacion.inicioSesion(usuario.getUsuusername(), usuario.getUsucontrasena());
 
         if (loginExitoso) {
-            String rol = servicioAutentificacion.definirRol(usuario.getUsuusername());
+            // Recupera el usuario completo desde el servicio
+            Usuario usuarioAutenticado = servicioAutentificacion.obtenerUsuarioPorUsername(usuario.getUsuusername());
+            session.setAttribute("usuario", usuarioAutenticado);
 
+            String rol = servicioAutentificacion.definirRol(usuario.getUsuusername());
             switch (rol) {
                 case "administrador":
                     return "redirect:/administrador";
@@ -46,10 +50,9 @@ public class ControladorLogin {
                     return "login";
             }
         } else {
-            System.out.println("Falló el login");
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             model.addAttribute("usuario", usuario);
-            return "redirect:/";
+            return "login";
         }
     }
 

@@ -55,18 +55,17 @@
         <form th:action="@{/orden/confirmar}" method="post" style="margin-top: 30px;">
             <h3>Datos del cliente:</h3>
             <div style="margin-bottom: 10px;">
-                <label for="nombre">Nombre completo:</label><br>
-                <input type="text" id="nombre" name="nombre" required style="width: 100%;">
+                <label>Nombre completo:</label><br>
+                <span th:text="${usuario.usunombres + ' ' + usuario.usuapellidos}"></span>
             </div>
             <div style="margin-bottom: 10px;">
                 <label for="direccion">Dirección de envío:</label><br>
                 <input type="text" id="direccion" name="direccion" required style="width: 100%;">
             </div>
             <div style="margin-bottom: 10px;">
-                <label for="correo">Correo electrónico:</label><br>
-                <input type="email" id="correo" name="correo" required style="width: 100%;">
+                <label>Correo electrónico:</label><br>
+                <span th:text="${usuario.usucorreo}"></span>
             </div>
-
             <button type="submit"
                     style="background-color: #ff6600; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
                 Confirmar pedido

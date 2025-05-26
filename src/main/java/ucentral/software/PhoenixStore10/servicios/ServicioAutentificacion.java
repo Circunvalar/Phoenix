@@ -1,5 +1,6 @@
 package ucentral.software.PhoenixStore10.servicios;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ucentral.software.PhoenixStore10.configs.PasswordEncrypt;
@@ -29,4 +30,14 @@ public class ServicioAutentificacion {
         Usuario cliente = clienteOptional.get();
         return cliente.getUsurol();
     }
+
+    public Usuario obtenerUsuarioPorUsername(@NotBlank(message = "El username es obligatorio") String usuusername) {
+        Optional<Usuario> usuarioOptional = repoUsuario.findByUsuusername(usuusername);
+        if (usuarioOptional.isPresent()) {
+            return usuarioOptional.get();
+        } else {
+            throw new RuntimeException("Usuario no encontrado con username: " + usuusername);
+        }
+    }
 }
+
