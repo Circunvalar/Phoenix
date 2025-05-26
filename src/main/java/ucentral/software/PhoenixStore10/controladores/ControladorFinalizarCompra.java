@@ -98,9 +98,9 @@ public class ControladorFinalizarCompra {
                     .build();
         }).toList();
 
-        double subtotal = detalles.stream().mapToDouble(DetalleFactura::getSubtotal).sum();
-        double iva = subtotal * 0.19;
-        double totalFinal = subtotal + iva;
+        double total = detalles.stream().mapToDouble(DetalleFactura::getSubtotal).sum();
+        double iva = total * 0.19; // 19% de IVA
+        double subtotal = total - iva;
 
         try {
             // Crear la factura base con más datos
@@ -112,7 +112,7 @@ public class ControladorFinalizarCompra {
                     .correo(correo)
                     .subtotal(subtotal)
                     .iva(iva)
-                    .total(totalFinal)
+                    .total(subtotal)
                     .formaPago(formaPago)
                     .condicionVenta(condicionVenta)
                     .build();
@@ -133,7 +133,7 @@ public class ControladorFinalizarCompra {
             doc.add(new Paragraph("Dirección: " + direccionEmisor));
             doc.add(new Paragraph("Teléfono: " + telefonoEmisor));
             doc.add(new Paragraph("Factura N°: " + numeroFactura));
-            doc.add(new Paragraph("Fecha: " + factura.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))));
+            doc.add(new Paragraph("Fecha: " + factura.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))));
             doc.add(new Paragraph(" "));
 
             // Cliente
@@ -165,7 +165,7 @@ public class ControladorFinalizarCompra {
             // Totales
             doc.add(new Paragraph("Subtotal: $" + String.format("%.2f", subtotal)));
             doc.add(new Paragraph("IVA 19%: $" + String.format("%.2f", iva)));
-            doc.add(new Paragraph("TOTAL A PAGAR: $" + String.format("%.2f", totalFinal)));
+            doc.add(new Paragraph("TOTAL A PAGAR: $" + String.format("%.2f", total)));
 
             doc.close();
 
