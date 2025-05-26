@@ -12,16 +12,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ucentral.software.PhoenixStore10.entidades.DetalleFactura;
-import ucentral.software.PhoenixStore10.entidades.Factura;
-import ucentral.software.PhoenixStore10.entidades.ItemCarrito;
-import ucentral.software.PhoenixStore10.entidades.Productos;
-import ucentral.software.PhoenixStore10.entidades.Usuario;
-import ucentral.software.PhoenixStore10.repositorios.RepoFactura;
-import ucentral.software.PhoenixStore10.repositorios.RepoProducto;
+import ucentral.software.PhoenixStore10.entidades.*;
+import ucentral.software.PhoenixStore10.repositorios.*;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -34,6 +30,8 @@ public class ControladorFinalizarCompra {
     private RepoFactura repoFactura;
     @Autowired
     private RepoProducto repoProducto;
+    @Autowired
+    private RepoEmisor repoEmisor; // Repositorio para el emisor
 
     @GetMapping("/confirmar")
     public String mostrarVistaConfirmacion(HttpSession session, Model model) {
@@ -47,7 +45,6 @@ public class ControladorFinalizarCompra {
         model.addAttribute("carrito", carrito);
         model.addAttribute("total", total);
 
-        // Agregar usuario autenticado al modelo
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         model.addAttribute("usuario", usuario);
 
@@ -75,30 +72,52 @@ public class ControladorFinalizarCompra {
         String nombreCompleto = usuario.getUsunombres() + " " + usuario.getUsuapellidos();
         String correo = usuario.getUsucorreo();
 
-        double total = carrito.stream()
-                .mapToDouble(item -> item.getPrecio() * item.getCantidad())
-                .sum();
+        // Obtener datos del emisor desde la base de datos
+        Emisor emisor = repoEmisor.findFirstByOrderByIdAsc();
+        if (emisor == null) {
+            model.addAttribute("error", "No se encontró la información del emisor.");
+            return "finalizar-compra";
+        }
+
+        String razonSocial = emisor.getRazonSocial();
+        String rucEmisor = emisor.getRuc();
+        String direccionEmisor = emisor.getDireccion();
+        String condicionVenta = "Contado";
+        String formaPago = "Virtual";
+        String numeroFactura = "FAC-" + LocalDateTime.now().getYear() + "-" + System.currentTimeMillis();
+
+        // Construir detalles
+        List<DetalleFactura> detalles = carrito.stream().map(item -> {
+            Productos producto = repoProducto.findByPronombre(item.getNombre());
+            return DetalleFactura.builder()
+                    .factura(null)
+                    .producto(producto)
+                    .cantidad(item.getCantidad())
+                    .precioUnitario(item.getPrecio())
+                    .subtotal(item.getCantidad() * item.getPrecio())
+                    .build();
+        }).toList();
+
+        double subtotal = detalles.stream().mapToDouble(DetalleFactura::getSubtotal).sum();
+        double iva = subtotal * 0.19;
+        double totalFinal = subtotal + iva;
 
         try {
-            // Crear la factura base
+            // Crear la factura base con más datos
             Factura factura = Factura.builder()
                     .cliente(nombreCompleto)
+                    .numero(numeroFactura)
                     .fecha(LocalDateTime.now())
-                    .total(total)
+                    .direccion(direccion)
+                    .correo(correo)
+                    .subtotal(subtotal)
+                    .iva(iva)
+                    .total(totalFinal)
+                    .formaPago(formaPago)
+                    .condicionVenta(condicionVenta)
                     .build();
 
-            // Construir detalles
-            List<DetalleFactura> detalles = carrito.stream().map(item -> {
-                Productos producto = repoProducto.findByPronombre(item.getNombre());
-                return DetalleFactura.builder()
-                        .factura(factura)
-                        .producto(producto)
-                        .cantidad(item.getCantidad())
-                        .precioUnitario(item.getPrecio())
-                        .subtotal(item.getCantidad() * item.getPrecio())
-                        .build();
-            }).toList();
-
+            detalles.forEach(det -> det.setFactura(factura));
             factura.setDetalles(detalles);
             repoFactura.save(factura);
 
@@ -107,30 +126,47 @@ public class ControladorFinalizarCompra {
             Document doc = new Document();
             PdfWriter.getInstance(doc, baos);
             doc.open();
+            String telefonoEmisor = "285 7463"; // puedes obtenerlo de BD en lugar de dejarlo fijo
 
-            doc.add(new Paragraph("Phoenix Store - Factura"));
+            // Encabezado
+            doc.add(new Paragraph(razonSocial + " - RUC: " + rucEmisor));
+            doc.add(new Paragraph("Dirección: " + direccionEmisor));
+            doc.add(new Paragraph("Teléfono: " + telefonoEmisor));
+            doc.add(new Paragraph("Factura N°: " + numeroFactura));
+            doc.add(new Paragraph("Fecha: " + factura.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))));
+            doc.add(new Paragraph(" "));
+
+            // Cliente
             doc.add(new Paragraph("Cliente: " + nombreCompleto));
             doc.add(new Paragraph("Dirección: " + direccion));
             doc.add(new Paragraph("Correo: " + correo));
-            doc.add(new Paragraph(" "));
-            doc.add(new Paragraph("Detalle de productos:"));
+            doc.add(new Paragraph("Condición de venta: " + condicionVenta));
+            doc.add(new Paragraph("Forma de pago: " + formaPago));
             doc.add(new Paragraph(" "));
 
-            PdfPTable table = new PdfPTable(3);
+            // Tabla de productos
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
             table.addCell("Producto");
             table.addCell("Cantidad");
+            table.addCell("P. Unitario");
             table.addCell("Subtotal");
 
             for (ItemCarrito item : carrito) {
                 table.addCell(item.getNombre());
                 table.addCell(String.valueOf(item.getCantidad()));
-                double subtotal = item.getPrecio() * item.getCantidad();
-                table.addCell(String.format("$ %.2f", subtotal));
+                table.addCell(String.format("$ %.2f", item.getPrecio()));
+                table.addCell(String.format("$ %.2f", item.getCantidad() * item.getPrecio()));
             }
 
             doc.add(table);
             doc.add(new Paragraph(" "));
-            doc.add(new Paragraph("Total: $" + String.format("%.2f", total)));
+
+            // Totales
+            doc.add(new Paragraph("Subtotal: $" + String.format("%.2f", subtotal)));
+            doc.add(new Paragraph("IVA 19%: $" + String.format("%.2f", iva)));
+            doc.add(new Paragraph("TOTAL A PAGAR: $" + String.format("%.2f", totalFinal)));
+
             doc.close();
 
             byte[] pdfBytes = baos.toByteArray();
@@ -139,8 +175,8 @@ public class ControladorFinalizarCompra {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(correo);
-            helper.setSubject("Factura - Phoenix Store");
-            helper.setText("Hola " + nombreCompleto + ",\n\nGracias por tu compra. Adjuntamos la factura en PDF.\n\nPhoenix Store");
+            helper.setSubject("Factura - " + razonSocial);
+            helper.setText("Hola " + nombreCompleto + ",\n\nGracias por tu compra. Adjuntamos la factura en PDF.\n\n" + razonSocial);
             helper.addAttachment("Factura-PhoenixStore.pdf", new ByteArrayResource(pdfBytes));
             mailSender.send(message);
 

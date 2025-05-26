@@ -1,4 +1,5 @@
 package ucentral.software.PhoenixStore10.entidades;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -20,12 +21,32 @@ public class Factura {
     private String cliente;
 
     @Column(nullable = false)
+    private String numero; // Número de factura
+
+    @Column(nullable = false)
     private LocalDateTime fecha;
 
     @Column(nullable = false)
-    private Double total;
+    private String direccion; // Dirección del cliente
 
-    // Relación con múltiples productos a través de detalle_factura
+    @Column(nullable = false)
+    private String correo; // Correo del cliente
+
+    @Column(nullable = false)
+    private Double subtotal; // Subtotal de la factura
+
+    @Column(nullable = false)
+    private Double iva; // IVA
+
+    @Column(nullable = false)
+    private Double total; // Total a pagar
+
+    @Column(nullable = false)
+    private String formaPago; // Forma de pago
+
+    @Column(nullable = false)
+    private String condicionVenta; // Condición de venta
+
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleFactura> detalles;
 }
