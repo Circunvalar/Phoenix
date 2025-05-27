@@ -8,6 +8,99 @@
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+        .product {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 220px;
+            text-align: center;
+            transition: box-shadow 0.2s;
+        }
+        .product:hover {
+            box-shadow: 0 0 20px rgba(255,102,0,0.2);
+        }
+        .product img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .modal-content img {
+            width: 150px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px; right: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #ff6600;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .modal-close:hover {
+            transform: scale(1.2);
+        }
+        .modal-content h3, .modal-content p, .modal-content h4 {
+            margin: 10px 0;
+        }
+        .modal-content button {
+            background-color: #ff6600;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-content button:hover {
+            background-color: #e65500;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -34,7 +127,10 @@
 
 <div class="products" th:if="${productos != null}">
     <div class="product" th:each="producto : ${productos}">
-        <img th:src="@{'/img/' + ${producto.proimagenUrl} + '.png'}"/>
+        <img th:src="@{'/img/' + ${producto.proimagenUrl} + '.png'}"
+             th:alt="${producto.pronombre}"
+             th:attr="data-nombre=${producto.pronombre},data-descripcion=${producto.prodescripcion},data-precio=${#numbers.formatDecimal(producto.proprecio, 0, 'NONE', 0, 'NONE')},data-imagen=${producto.proimagenUrl + '.png'},data-id=${producto.id}"
+             onclick="mostrarModal(this)"/>
         <p th:text="${producto.pronombre}">Nombre del producto</p>
         <p><strong>$</strong><span class="precio" th:text="${#numbers.formatDecimal(producto.proprecio, 0, 'NONE', 0, 'NONE')}">0</span></p>
         <form action="/carrito/agregar" method="post">
@@ -43,13 +139,39 @@
         </form>
     </div>
 </div>
+
+<!-- Modal para vista previa de producto -->
+<div id="modalProducto" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="cerrarModal()">&times;</span>
+        <img id="modalImg" src="" alt="Imagen">
+        <h3 id="modalNombre"></h3>
+        <p id="modalDescripcion"></p>
+        <h4 id="modalPrecio"></h4>
+        <form id="modalCarritoForm" action="/carrito/agregar" method="post">
+            <input id="modalProductoId" name="id" type="hidden"/>
+            <button type="submit">Agregar al carrito</button>
+        </form>
+    </div>
+</div>
+
 <script>
+    function mostrarModal(img) {
+        document.getElementById('modalNombre').textContent = img.getAttribute('data-nombre');
+        document.getElementById('modalDescripcion').textContent = img.getAttribute('data-descripcion');
+        document.getElementById('modalPrecio').textContent = '$' + img.getAttribute('data-precio');
+        document.getElementById('modalImg').src = '/img/' + img.getAttribute('data-imagen');
+        // Asigna el id del producto al input oculto del modal
+        document.getElementById('modalProductoId').value = img.getAttribute('data-id');
+        document.getElementById('modalProducto').style.display = 'flex';
+    }
+    function cerrarModal() {
+        document.getElementById('modalProducto').style.display = 'none';
+    }
     document.querySelectorAll('.precio').forEach(function(span) {
         let num = Number(span.textContent.replace(/\D/g, ''));
         if (!isNaN(num)) {
-            // Formatea con puntos para miles
             let partes = num.toLocaleString('de-DE').split('.');
-            // Si hay millones, une los dos primeros grupos con apóstrofe
             if (partes.length > 2) {
                 let millones = partes.slice(0, partes.length - 2).join('') + "'";
                 let miles = partes.slice(-2).join('.');
@@ -57,6 +179,13 @@
             } else {
                 span.textContent = partes.join('.');
             }
+        }
+    });
+    document.getElementById('busquedaForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const query = document.getElementById('queryInput').value;
+        if (query.trim() !== '') {
+            window.location.href = '/home?query=' + encodeURIComponent(query);
         }
     });
 </script>
