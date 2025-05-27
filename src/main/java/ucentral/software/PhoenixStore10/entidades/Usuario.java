@@ -56,5 +56,8 @@ public class Usuario {
 
     @Column
     private String usudireccion;
+
+    @NotNull (message = "Obligatorio")
+    private boolean usuestado; // Activo o Inactivo
 }
 

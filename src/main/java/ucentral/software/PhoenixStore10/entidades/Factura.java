@@ -17,35 +17,36 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long facid;
 
-    @Column(nullable = false)
-    private String cliente;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "usuid", nullable = false)
+    private Usuario cliente; // Relación con el cliente
 
     @Column(nullable = false)
-    private String numero; // Número de factura
+    private String numero;
 
     @Column(nullable = false)
     private LocalDateTime fecha;
 
     @Column(nullable = false)
-    private String direccion; // Dirección del cliente
+    private String direccion;
 
     @Column(nullable = false)
-    private String correo; // Correo del cliente
+    private String correo;
 
     @Column(nullable = false)
-    private Double subtotal; // Subtotal de la factura
+    private Double subtotal;
 
     @Column(nullable = false)
-    private Double iva; // IVA
+    private Double iva;
 
     @Column(nullable = false)
-    private Double total; // Total a pagar
+    private Double total;
 
     @Column(nullable = false)
-    private String formaPago; // Forma de pago
+    private String formaPago;
 
     @Column(nullable = false)
-    private String condicionVenta; // Condición de venta
+    private String condicionVenta;
 
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleFactura> detalles;

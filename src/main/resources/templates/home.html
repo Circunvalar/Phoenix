@@ -36,12 +36,29 @@
     <div class="product" th:each="producto : ${productos}">
         <img th:src="@{'/img/' + ${producto.proimagenUrl} + '.png'}"/>
         <p th:text="${producto.pronombre}">Nombre del producto</p>
-        <p><strong>$</strong><span th:text="${producto.proprecio}">0.0</span></p>
+        <p><strong>$</strong><span class="precio" th:text="${#numbers.formatDecimal(producto.proprecio, 0, 'NONE', 0, 'NONE')}">0</span></p>
         <form action="/carrito/agregar" method="post">
             <input name="id" th:value="${producto.id}" type="hidden"/>
             <button type="submit">Agregar al carrito</button>
         </form>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.precio').forEach(function(span) {
+        let num = Number(span.textContent.replace(/\D/g, ''));
+        if (!isNaN(num)) {
+            // Formatea con puntos para miles
+            let partes = num.toLocaleString('de-DE').split('.');
+            // Si hay millones, une los dos primeros grupos con apóstrofe
+            if (partes.length > 2) {
+                let millones = partes.slice(0, partes.length - 2).join('') + "'";
+                let miles = partes.slice(-2).join('.');
+                span.textContent = millones + miles;
+            } else {
+                span.textContent = partes.join('.');
+            }
+        }
+    });
+</script>
 </body>
 </html>

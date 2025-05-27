@@ -43,13 +43,13 @@
             <tr th:each="item : ${carrito}">
                 <td style="padding: 10px;" th:text="${item.nombre}"></td>
                 <td style="padding: 10px;" th:text="${item.cantidad}"></td>
-                <td style="padding: 10px;" th:text="${#numbers.formatDecimal(item.precio * item.cantidad, 1, 2)}"></td>
+                <td class="precio" style="padding: 10px;" th:text="${#numbers.formatDecimal(item.precio * item.cantidad, 0, 'NONE', 0, 'NONE')}"></td>
             </tr>
             </tbody>
         </table>
 
         <div style="text-align: right; margin-top: 20px;">
-            <h3>Total a pagar: $<span th:text="${#numbers.formatDecimal(total, 1, 2)}"></span></h3>
+            <h3>Total a pagar: $<span class="precio" th:text="${#numbers.formatDecimal(total, 0, 'NONE', 0, 'NONE')}"></span></h3>
         </div>
 
         <form th:action="@{/orden/confirmar}" method="post" style="margin-top: 30px;">
@@ -80,6 +80,20 @@
         const query = document.getElementById('queryInput').value;
         if (query.trim() !== '') {
             window.location.href = '/home?query=' + encodeURIComponent(query);
+        }
+    });
+
+    document.querySelectorAll('.precio').forEach(function(span) {
+        let num = Number(span.textContent.replace(/\D/g, ''));
+        if (!isNaN(num)) {
+            let partes = num.toLocaleString('de-DE').split('.');
+            if (partes.length > 2) {
+                let millones = partes.slice(0, partes.length - 2).join('') + "'";
+                let miles = partes.slice(-2).join('.');
+                span.textContent = millones + miles;
+            } else {
+                span.textContent = partes.join('.');
+            }
         }
     });
 </script>

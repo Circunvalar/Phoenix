@@ -35,6 +35,9 @@ public class Productos {
     @Column(nullable = false)
     private String proimagenUrl;
 
+    @Column(nullable = false)
+    private Integer prostock;
+
     public Long getId() {
         return procodigo;
     }

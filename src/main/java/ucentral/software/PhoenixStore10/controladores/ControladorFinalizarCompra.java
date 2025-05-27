@@ -32,6 +32,8 @@ public class ControladorFinalizarCompra {
     private RepoProducto repoProducto;
     @Autowired
     private RepoEmisor repoEmisor; // Repositorio para el emisor
+    @Autowired
+    private RepoUsuario repoUsuario;
 
     @GetMapping("/confirmar")
     public String mostrarVistaConfirmacion(HttpSession session, Model model) {
@@ -69,8 +71,15 @@ public class ControladorFinalizarCompra {
             return "redirect:/login";
         }
 
-        String nombreCompleto = usuario.getUsunombres() + " " + usuario.getUsuapellidos();
-        String correo = usuario.getUsucorreo();
+        // Obtener el usuario autenticado desde el repositorio de usuarios
+        Usuario usuarioAutenticado = repoUsuario.findByUsuusername(usuario.getUsuusername()).orElse(null);
+        if (usuarioAutenticado == null) {
+            model.addAttribute("error", "Usuario no encontrado.");
+            return "redirect:/login";
+        }
+
+        String nombreCompleto = usuarioAutenticado.getUsunombres() + " " + usuarioAutenticado.getUsuapellidos();
+        String correo = usuarioAutenticado.getUsucorreo();
 
         // Obtener datos del emisor desde la base de datos
         Emisor emisor = repoEmisor.findFirstByOrderByIdAsc();
@@ -86,9 +95,14 @@ public class ControladorFinalizarCompra {
         String formaPago = "Virtual";
         String numeroFactura = "FAC-" + LocalDateTime.now().getYear() + "-" + System.currentTimeMillis();
 
-        // Construir detalles
+        // Construir detalles y actualizar stock
         List<DetalleFactura> detalles = carrito.stream().map(item -> {
             Productos producto = repoProducto.findByPronombre(item.getNombre());
+            if (producto != null) {
+                int nuevoStock = producto.getProstock() - item.getCantidad();
+                producto.setProstock(nuevoStock);
+                repoProducto.save(producto); // Actualiza el stock en la BD
+            }
             return DetalleFactura.builder()
                     .factura(null)
                     .producto(producto)
@@ -105,14 +119,14 @@ public class ControladorFinalizarCompra {
         try {
             // Crear la factura base con más datos
             Factura factura = Factura.builder()
-                    .cliente(nombreCompleto)
+                    .cliente(usuarioAutenticado)
                     .numero(numeroFactura)
                     .fecha(LocalDateTime.now())
                     .direccion(direccion)
                     .correo(correo)
                     .subtotal(subtotal)
                     .iva(iva)
-                    .total(subtotal)
+                    .total(total)
                     .formaPago(formaPago)
                     .condicionVenta(condicionVenta)
                     .build();

@@ -42,6 +42,7 @@ public class ServicioUsuario {
         usuario.setUsucontrasena(hashedPassword);
 
         usuario.setUsurol("cliente");
+        usuario.setUsuestado(true);
         repoUsuario.save(usuario);
         model.addAttribute("success", "Usuario registrado exitosamente.");
         return "home";
